@@ -3,22 +3,35 @@ import ConfirmationModal from '../ConfirmationModal';
 import Image from 'next/image';
 import { Post } from '@prisma/client';
 
-export default function PostCard({ post }: { post: Post }) {
+export default function PostCard({ post, onPostDeleted }: { post: Post, onPostDeleted: (postId: number) => void }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const handleDelete = async () => {
+    setIsDeleting(true);
+    setErrorMessage(null);
+
     try {
       const response = await fetch(`/api/posts/${post.id}`, {
         method: 'DELETE',
       });
-      if (!response.ok) throw new Error('Failed to delete post');
-      window.location.reload();
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData?.message || 'Failed to delete post');
+      }
+      setIsModalOpen(false);
+      onPostDeleted(post.id);
     } catch (error) {
       if (error instanceof Error) {
-        alert(error.message);
+        setErrorMessage(error.message);
       } else {
-        alert('An unknown error occurred');
+        setErrorMessage('An unexpected error occurred. Please try again.');
       }
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -45,11 +58,15 @@ export default function PostCard({ post }: { post: Post }) {
           <p className="mt-3 text-gray-700 text-sm">{post.body}</p>
 
           <button
-            className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded mt-4 cursor-pointer"
+            className={`bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded mt-4 cursor-pointer ${
+              isDeleting ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
             onClick={() => setIsModalOpen(true)}
+            disabled={isDeleting}
           >
-            Delete
+            {isDeleting ? 'Deleting...' : 'Delete'}
           </button>
+          {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
         </div>
       </div>
       <ConfirmationModal

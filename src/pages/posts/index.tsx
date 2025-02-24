@@ -20,8 +20,13 @@ interface PostsProps {
 
 export default function Posts({ posts }: PostsProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const [postList, setPostList] = useState(posts);
 
-  const filteredPosts = posts.filter(
+  const handlePostDeleted = (id: number) => {
+    setPostList((prevPosts) => prevPosts.filter((post) => post.id !== id));
+  };
+
+  const filteredPosts = postList.filter(
     (post) =>
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.body.toLowerCase().includes(searchQuery.toLowerCase())
@@ -42,7 +47,7 @@ export default function Posts({ posts }: PostsProps) {
         />
       </div>
       {filteredPosts.map((post) => (
-        <PostCard key={post.id} post={post} />
+        <PostCard key={post.id} post={post} onPostDeleted={handlePostDeleted}/>
       ))}
     </div>
   );

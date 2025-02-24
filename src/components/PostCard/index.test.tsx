@@ -20,8 +20,14 @@ describe('PostCard', () => {
     },
   };
 
+  const mockOnPostDeleted = jest.fn(); // Mock callback function
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should render the post card correctly', () => {
-    render(<PostCard post={mockPost} />);
+    render(<PostCard post={mockPost} onPostDeleted={mockOnPostDeleted} />);
 
     expect(screen.getByText(mockPost.title)).toBeInTheDocument();
     expect(screen.getByText(mockPost.body)).toBeInTheDocument();
@@ -32,18 +38,20 @@ describe('PostCard', () => {
   });
 
   it('should open the confirmation modal when the "Delete" button is clicked', async () => {
-    render(<PostCard post={mockPost} />);
+    render(<PostCard post={mockPost} onPostDeleted={mockOnPostDeleted} />);
 
     const deleteButton = screen.getByText('Delete');
     await userEvent.click(deleteButton);
-    const confirmButton = screen.getByText('Yes');
-    const cancelButton = screen.getByText('No');
-    expect(confirmButton).toBeInTheDocument();
-    expect(cancelButton).toBeInTheDocument();
+
+    expect(
+      screen.getByText('Are you sure you want to delete this post?')
+    ).toBeInTheDocument();
+    expect(screen.getByText('Yes')).toBeInTheDocument();
+    expect(screen.getByText('No')).toBeInTheDocument();
   });
 
-  it('should call handleDelete when the "Confirm" button is clicked', async () => {
-    render(<PostCard post={mockPost} />);
+  it('should call handleDelete and onPostDeleted when "Confirm" button is clicked', async () => {
+    render(<PostCard post={mockPost} onPostDeleted={mockOnPostDeleted} />);
 
     const deleteButton = screen.getByText('Delete');
     await userEvent.click(deleteButton);
@@ -55,11 +63,35 @@ describe('PostCard', () => {
       expect(global.fetch).toHaveBeenCalledWith(`/api/posts/${mockPost.id}`, {
         method: 'DELETE',
       });
+      expect(mockOnPostDeleted).toHaveBeenCalledWith(mockPost.id); // Ensure callback is called
     });
   });
 
+  it('should handle API failure and display an error message', async () => {
+    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: false,
+        json: () => Promise.resolve({ message: 'Failed to delete post' }),
+      })
+    );
+
+    render(<PostCard post={mockPost} onPostDeleted={mockOnPostDeleted} />);
+
+    const deleteButton = screen.getByText('Delete');
+    await userEvent.click(deleteButton);
+
+    const confirmButton = screen.getByText('Yes');
+    await userEvent.click(confirmButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('Failed to delete post')).toBeInTheDocument();
+    });
+
+    expect(mockOnPostDeleted).not.toHaveBeenCalled();
+  });
+
   it('should close the modal when the "Cancel" button is clicked', async () => {
-    render(<PostCard post={mockPost} />);
+    render(<PostCard post={mockPost} onPostDeleted={mockOnPostDeleted} />);
 
     const deleteButton = screen.getByText('Delete');
     await userEvent.click(deleteButton);
@@ -67,7 +99,10 @@ describe('PostCard', () => {
     const cancelButton = screen.getByText('No');
     await userEvent.click(cancelButton);
 
-    expect(screen.queryByText('Confirm')).not.toBeInTheDocument();
-    expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.queryByText('Are you sure you want to delete this post?')
+      ).not.toBeInTheDocument();
+    });
   });
 });

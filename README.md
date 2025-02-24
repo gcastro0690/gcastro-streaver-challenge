@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Project: Next.js Post Management App
 
-## Getting Started
+## 📌 Overview
+This project is a **Next.js** web application that allows users to manage posts with features such as:
 
-First, run the development server:
+- **CRUD Operations**: Create, read, update, and delete posts.
+- **Confirmation Modal**: Used for critical actions (e.g., deleting a post).
+- **Automatic Redirection**: Redirects users from `/` to `/posts`.
+- **State Management**: Parent component dynamically updates after post deletion.
+- **Database Seeding**: Uses Prisma to seed the database with initial data.
+- **Unit Testing**: Ensures code reliability and functionality.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Tech Stack
+### **Frontend**
+- **Next.js** → React framework with SSR & API routes.
+- **TypeScript** → Static typing for better code quality.
+- **Tailwind CSS** → Utility-first CSS framework for styling.
+
+### **Backend**
+- **Prisma** → ORM for database interactions.
+- **Next.js API Routes** → Handles RESTful API endpoints.
+
+### **Database**
+- **SQLite** → Stores post data (hosted in `/tmp/` in Vercel since it doesn’t support SQLite natively).
+- **Database Seeding** → Uses Prisma’s seed mechanism for initial data population.
+
+### **Testing**
+- **Jest** → Unit testing framework.
+- **React Testing Library** → Component testing.
+- **ts-jest** → TypeScript support for Jest.
+
+## 🛠️ Project Structure
+```
+/pages      # Application pages & API routes
+/components # Reusable UI components
+/prisma     # Prisma configuration & schema
+/tests      # Unit tests
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏗️ Installation & Setup
+### **1️⃣ Clone the Repository**
+```bash
+git clone https://github.com/gcastro0690/gcastro-streaver-challenge.git
+cd gcastro-challenge
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### **2️⃣ Install Dependencies**
+```bash
+yarn install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### **3️⃣ Set Up the Database**
+```bash
+yarn prisma migrate dev --name init
+yarn prisma db seed
+```
 
-## Learn More
+### **4️⃣ Run the Development Server**
+```bash
+yarn dev
+```
+> Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-To learn more about Next.js, take a look at the following resources:
+## ✅ Running Tests
+To run unit tests, use:
+```bash
+yarn test
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Deployment
+The application is deployed on **Vercel**. To deploy manually:
+```bash
+yarn vercel --prod
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🔮 Future Improvements
+- **UI/UX Enhancements** → Improve design, animations, and layout consistency.
+- **Authentication & Authorization** → Add role-based access control.
+- **Pagination & Search** → Improve post management for large datasets.
+- **Integration Tests** → Expand test coverage for API and user interactions.
+- **Database Optimization** → Implement indexing and query optimizations.
 
-## Deploy on Vercel
+## 👥 Contributors
+- **Gonzalo Castro** - [GitHub Profile](https://github.com/gcastro0690)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📜 License
+This project is licensed under the **MIT License**.
