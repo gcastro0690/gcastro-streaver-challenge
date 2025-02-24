@@ -4,37 +4,36 @@ import prisma from '@/lib/prisma';
  * @swagger
  * /api/posts:
  *   get:
- *     summary: Get all posts
- *     tags: [Posts]
+ *     summary: Fetch all posts
+ *     tags:
+ *       - Posts
+ *     description: Retrieves a list of all posts
  *     responses:
  *       200:
- *         description: Posts list
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Post'
+ *         description: Successful response
  *   post:
  *     summary: Create a new post
- *     tags: [Posts]
+ *     tags:
+ *       - Posts
+ *     description: Adds a new post to the database
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Post'
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               body:
+ *                 type: string
+ *               userId:
+ *                 type: integer
  *     responses:
  *       201:
- *         description: Post created
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Post'
- *       400:
- *         description: Bad request
- *      500:
+ *         description: Post created successfully
  */
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

@@ -1,14 +1,16 @@
-# Project: Next.js Post Management App
+# Next.js Post Management App
 
 ## 📌 Overview
 This project is a **Next.js** web application that allows users to manage posts with features such as:
 
 - **CRUD Operations**: Create, read, update, and delete posts.
+- **Swagger API Documentation**: Provides a user-friendly way to explore API endpoints.
 - **Confirmation Modal**: Used for critical actions (e.g., deleting a post).
-- **Automatic Redirection**: Redirects users from `/` to `/posts`.
-- **State Management**: Parent component dynamically updates after post deletion.
+- **State Management**: Updates the UI dynamically after a post is deleted.
 - **Database Seeding**: Uses Prisma to seed the database with initial data.
 - **Unit Testing**: Ensures code reliability and functionality.
+
+---
 
 ## 🚀 Tech Stack
 ### **Frontend**
@@ -29,37 +31,53 @@ This project is a **Next.js** web application that allows users to manage posts 
 - **React Testing Library** → Component testing.
 - **ts-jest** → TypeScript support for Jest.
 
-## 🛠️ Project Structure
-```
-/pages      # Application pages & API routes
-/components # Reusable UI components
-/prisma     # Prisma configuration & schema
-/tests      # Unit tests
-```
+---
 
-## 🏗️ Installation & Setup
-### **1️⃣ Clone the Repository**
+## 🛠️ Installation & Setup
+### **Clone the Repository**
 ```bash
 git clone https://github.com/gcastro0690/gcastro-streaver-challenge.git
 cd gcastro-challenge
 ```
 
-### **2️⃣ Install Dependencies**
+### **Install Dependencies**
 ```bash
 yarn install
 ```
 
-### **3️⃣ Set Up the Database**
+### **Set Up the Database**
 ```bash
 yarn prisma migrate dev --name init
 yarn prisma db seed
 ```
 
-### **4️⃣ Run the Development Server**
+### **Run the Development Server**
 ```bash
 yarn dev
 ```
 > Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+---
+
+## 📖 API Documentation (Swagger)
+- **Swagger UI is integrated** to provide a user-friendly interface for API testing.
+- **Extra endpoints have been added** beyond the required ones to improve API visibility.
+
+### **Accessing the Swagger Documentation**
+- Run the development server:
+  ```bash
+  yarn dev
+  ```
+- Open your browser and go to:
+  ```
+  http://localhost:3000/swagger
+  ```
+- If deployed, access it at:
+  ```
+  https://gcastro-challenge.vercel.app/swagger
+  ```
+
+---
 
 ## ✅ Running Tests
 To run unit tests, use:
@@ -67,11 +85,19 @@ To run unit tests, use:
 yarn test
 ```
 
+---
+
 ## 🚀 Deployment
-The application is deployed on **Vercel**. To deploy manually:
+The application is deployed on **Vercel** at:
+  
+  [https://gcastro-challenge.vercel.app/](https://gcastro-challenge.vercel.app/)
+  
+  To deploy manually:
 ```bash
 yarn vercel --prod
 ```
+
+---
 
 ## 🔮 Future Improvements
 - **UI/UX Enhancements** → Improve design, animations, and layout consistency.
@@ -80,8 +106,13 @@ yarn vercel --prod
 - **Integration Tests** → Expand test coverage for API and user interactions.
 - **Database Optimization** → Implement indexing and query optimizations.
 
+---
+
 ## 👥 Contributors
 - **Gonzalo Castro** - [GitHub Profile](https://github.com/gcastro0690)
 
+---
+
 ## 📜 License
 This project is licensed under the **MIT License**.
+

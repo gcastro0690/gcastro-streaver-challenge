@@ -6,27 +6,21 @@ import prisma from '@/lib/prisma';
  * /api/posts/search:
  *   get:
  *     summary: Query posts by title or body
- *     tags: [Posts]
+ *     tags:
+ *       - Posts
+ *     description: Returns posts that match the search query in either the title or body
  *     parameters:
  *       - in: query
  *         name: q
  *         required: true
  *         schema:
  *           type: string
- *         description: Search query
+ *         description: The search query
  *     responses:
  *       200:
- *         description: Posts list matching the query
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Post'
- *       400:
- *         description: Bad request
- *      500:
+ *         description: Successful search response
  */
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -36,10 +30,7 @@ export default async function handler(
       const query = req.query.q as string;
       const posts = await prisma.post.findMany({
         where: {
-          OR: [
-            { title: { contains: query } },
-            { body: { contains: query } },
-          ],
+          OR: [{ title: { contains: query } }, { body: { contains: query } }],
         },
       });
       res.status(200).json(posts);

@@ -4,9 +4,8 @@ const options: swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Next.js API con Swagger',
+      title: 'Next.js API with Swagger',
       version: '1.0.0',
-      description: 'Documentación de la API sin Express',
     },
     components: {
       schemas: {
@@ -14,8 +13,8 @@ const options: swaggerJsdoc.Options = {
           type: 'object',
           properties: {
             id: { type: 'integer', example: 1 },
-            title: { type: 'string', example: 'Mi primer post' },
-            body: { type: 'string', example: 'Este es el contenido del post.' },
+            title: { type: 'string', example: 'My first post' },
+            body: { type: 'string', example: 'This is the post content.' },
             userId: { type: 'integer', example: 1 },
           },
         },
