@@ -31,13 +31,13 @@ describe('PostCard', () => {
     expect(deleteButton).toBeInTheDocument();
   });
 
-  it('should open the confirmation modal when the "Delete" button is clicked', () => {
+  it('should open the confirmation modal when the "Delete" button is clicked', async () => {
     render(<PostCard post={mockPost} />);
 
     const deleteButton = screen.getByText('Delete');
-    userEvent.click(deleteButton);
-    const confirmButton = screen.getByText('Confirm');
-    const cancelButton = screen.getByText('Cancel');
+    await userEvent.click(deleteButton);
+    const confirmButton = screen.getByText('Yes');
+    const cancelButton = screen.getByText('No');
     expect(confirmButton).toBeInTheDocument();
     expect(cancelButton).toBeInTheDocument();
   });
@@ -46,10 +46,10 @@ describe('PostCard', () => {
     render(<PostCard post={mockPost} />);
 
     const deleteButton = screen.getByText('Delete');
-    userEvent.click(deleteButton);
+    await userEvent.click(deleteButton);
 
-    const confirmButton = screen.getByText('Confirm');
-    userEvent.click(confirmButton);
+    const confirmButton = screen.getByText('Yes');
+    await userEvent.click(confirmButton);
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(`/api/posts/${mockPost.id}`, {
@@ -58,14 +58,14 @@ describe('PostCard', () => {
     });
   });
 
-  it('should close the modal when the "Cancel" button is clicked', () => {
+  it('should close the modal when the "Cancel" button is clicked', async () => {
     render(<PostCard post={mockPost} />);
 
     const deleteButton = screen.getByText('Delete');
-    userEvent.click(deleteButton);
+    await userEvent.click(deleteButton);
 
-    const cancelButton = screen.getByText('Cancel');
-    userEvent.click(cancelButton);
+    const cancelButton = screen.getByText('No');
+    await userEvent.click(cancelButton);
 
     expect(screen.queryByText('Confirm')).not.toBeInTheDocument();
     expect(screen.queryByText('Cancel')).not.toBeInTheDocument();

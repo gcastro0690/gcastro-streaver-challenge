@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ConfirmationModal from '@/components/ConfirmationModal';
+import ConfirmationModal from '../ConfirmationModal';
 import Image from 'next/image';
 import { Post } from '@prisma/client';
 
